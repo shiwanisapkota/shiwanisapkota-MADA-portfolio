@@ -1,0 +1,58 @@
+[
+  {
+    "objectID": "tidytuesday_exercise.html",
+    "href": "tidytuesday_exercise.html",
+    "title": "Tidy Tuesday Exercise",
+    "section": "",
+    "text": "Placeholder file for the future Tidy Tuesday exercise."
+  },
+  {
+    "objectID": "aboutme.html",
+    "href": "aboutme.html",
+    "title": "About me",
+    "section": "",
+    "text": "Who Am I?\n\n\n\n\n\nHi everyone! I am Shiwani Sapkota, a 1st year PhD student in the Department of Epidemiology and Biostatistics with the major on Data Analysis and Modeling. My research interests include socio-epidemiologic research methods, data modeling, analysis, and visualization. I am currently working on Family Matters project examining the patterns of dietary intake over time and their association with cardiovascular health outcomes in children.\n\n\nStatistical Training Experience\nI was introduced to R and SAS during my MS at the University of Tennessee, Knoxville. I can do basic coding and generate some figures using R and SAS. In addition to this, I have currently started learning STATA as my research team mostly uses STATA for data analytics.\n\n\nCourse Goals\nI think there is so much to learn with R. I remember the times when I used to panic whenever I got an error message in R. With time, I have realized that getting errors are common in learning process especially when we are learning different programming languages. With this class, I want to get more confident in using R. I am excited for Machine Learning portions of this class as I do not have any prior exposure to it. Towards the end of the class, I hope to be able to write a series of loop codes understanding the statistical reasoning behind those codes.\n\n\nFun Fact\nMy life in 2019 was so nomadic that I lived in 4 states (Maryland, Hawaii, Washington State, and Tennessee) each for 3 months within that single year. It’s funny how I ended in Georgia in 2022.\n\n\nThe Epidemiologist R Handbook\nI find this handbook much helpful in a sense that it starts from basic topic and takes us along a large topics of Epidemiology. I joined PhD at UGA with no prior epidemiological background and this handbook has been really handy. Please feel free to check this out.\nhttps://epirhandbook.com/en/index.html"
+  },
+  {
+    "objectID": "visualization_exercise.html",
+    "href": "visualization_exercise.html",
+    "title": "Visualization Exercise",
+    "section": "",
+    "text": "Placeholder file for the future visualization exercise."
+  },
+  {
+    "objectID": "coding_exercise.html",
+    "href": "coding_exercise.html",
+    "title": "R Coding Exercise",
+    "section": "",
+    "text": "Placeholder file for the future R coding exercise."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "My website and data analysis portfolio",
+    "section": "",
+    "text": "Hello\n\nAnd hello again\nWelcome to my website and data analysis portfolio.\n\nPlease use the Menu Bar above to look around.\nHave fun!"
+  },
+  {
+    "objectID": "aboutme.html#statistical-training-experience",
+    "href": "aboutme.html#statistical-training-experience",
+    "title": "About me",
+    "section": "Statistical Training Experience",
+    "text": "Statistical Training Experience\nI was introduced to R and SAS during my MS at the University of Tennessee, Knoxville. I can do basic coding and generate some figures using R and SAS. In addition to this, I have currently started learning STATA as my research team mostly uses STATA for data analytics."
+  },
+  {
+    "objectID": "aboutme.html#course-goals",
+    "href": "aboutme.html#course-goals",
+    "title": "About me",
+    "section": "Course Goals",
+    "text": "Course Goals\nI think there is so much to learn with R. I remember the times when I used to panic whenever I got an error message in R. With time, I have realized that getting errors are common in learning process especially when we are learning different programming languages. With this class, I want to get more confident in using R. I am excited for Machine Learning portions of this class as I do not have any prior exposure to it. Towards the end of the class, I hope to be able to write a series of loop codes understanding the statistical reasoning behind those codes."
+  },
+  {
+    "objectID": "aboutme.html#fun-fact",
+    "href": "aboutme.html#fun-fact",
+    "title": "About me",
+    "section": "Fun Fact",
+    "text": "Fun Fact\nMy life in 2019 was so nomadic that I lived in 4 states (Maryland, Hawaii, Washington State, and Tennessee) each for 3 months within that single year. It’s funny how I ended in Georgia in 2022.\n##The Epidemiologist R Handbook\nI find this handbook much helpful in a sense that it starts from basic topic and takes us along a large topics of Epidemiology. I joined PhD at UGA with no prior epidemiological background and this handbook has been really handy. Please feel free to check this out.\nhttps://epirhandbook.com/en/index.html"
+  }
+]

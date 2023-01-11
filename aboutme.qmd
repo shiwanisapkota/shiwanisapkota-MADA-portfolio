@@ -5,4 +5,26 @@ output:
       toc: FALSE
 ---
 
-Add some text and a figure describing myself.
+# Who Am I?
+
+![](head.png){width="300" fig-align="center"}
+
+Hi everyone! I am Shiwani Sapkota, a 1^st^ year PhD student in the Department of Epidemiology and Biostatistics with the major on Data Analysis and Modeling. My research interests include socio-epidemiologic research methods, data modeling, analysis, and visualization. I am currently working on *Family Matters* project examining the patterns of dietary intake over time and their association with cardiovascular health outcomes in children.
+
+# Statistical Training Experience
+
+I was introduced to R and SAS during my MS at the University of Tennessee, Knoxville. I can do basic coding and generate some figures using R and SAS. In addition to this, I have currently started learning STATA as my research team mostly uses STATA for data analytics.
+
+# Course Goals
+
+I think there is so much to learn with R. I remember the times when I used to panic whenever I got an error message in R. With time, I have realized that getting errors are common in learning process especially when we are learning different programming languages. With this class, I want to get more confident in using R. I am excited for Machine Learning portions of this class as I do not have any prior exposure to it. Towards the end of the class, I hope to be able to write a series of loop codes understanding the statistical reasoning behind those codes.
+
+# Fun Fact
+
+My life in 2019 was so nomadic that I lived in 4 states (Maryland, Hawaii, Washington State, and Tennessee) each for 3 months within that single year. It's funny how I ended in Georgia in 2022.
+
+# The Epidemiologist R Handbook
+
+I find this handbook much helpful in a sense that it starts from basic topic and takes us along a large topics of Epidemiology. I joined PhD at UGA with no prior epidemiological background and this handbook has been really handy. Please feel free to check this out.
+
+<https://epirhandbook.com/en/index.html>
