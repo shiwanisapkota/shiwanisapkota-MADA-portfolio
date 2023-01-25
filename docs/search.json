@@ -25,14 +25,14 @@
     "href": "coding_exercise.html",
     "title": "R Coding Exercise",
     "section": "",
-    "text": "# Loading dslabs and tidyverse packages\nlibrary(\"dslabs\") \nlibrary(\"tidyverse\")\n\n── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──\n✔ ggplot2 3.4.0     ✔ purrr   0.3.4\n✔ tibble  3.1.8     ✔ dplyr   1.0.9\n✔ tidyr   1.2.0     ✔ stringr 1.4.1\n✔ readr   2.1.2     ✔ forcats 0.5.2\n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()"
+    "text": "# Loading dslabs and tidyverse packages\nlibrary(\"dslabs\") \n\nWarning: package 'dslabs' was built under R version 4.2.2\n\nlibrary(\"tidyverse\")\n\n── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──\n✔ ggplot2 3.3.6      ✔ purrr   0.3.4 \n✔ tibble  3.1.8      ✔ dplyr   1.0.10\n✔ tidyr   1.2.1      ✔ stringr 1.4.1 \n✔ readr   2.1.2      ✔ forcats 0.5.2 \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()"
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "My website and data analysis portfolio",
     "section": "",
-    "text": "Hello\n\nAnd hello again\nWelcome to my website and data analysis portfolio.\n\nPlease use the Menu Bar above to look around.\nHave fun!"
+    "text": "Welcome to my website and data analysis portfolio.\n\nPlease use the Menu Bar above to look around.\nHave fun!"
   },
   {
     "objectID": "aboutme.html#statistical-training-experience",
