@@ -25,7 +25,7 @@
     "href": "coding_exercise.html",
     "title": "R Coding Exercise",
     "section": "",
-    "text": "Placeholder file for the future R coding exercise."
+    "text": "# Loading dslabs and tidyverse packages\nlibrary(\"dslabs\") \nlibrary(\"tidyverse\")\n\n── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──\n✔ ggplot2 3.4.0     ✔ purrr   0.3.4\n✔ tibble  3.1.8     ✔ dplyr   1.0.9\n✔ tidyr   1.2.0     ✔ stringr 1.4.1\n✔ readr   2.1.2     ✔ forcats 0.5.2\n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()"
   },
   {
     "objectID": "index.html",
@@ -54,5 +54,47 @@
     "title": "About me",
     "section": "Fun Fact",
     "text": "Fun Fact\nMy life in 2019 was so nomadic that I lived in 4 states (Maryland, Hawaii, Washington State, and Tennessee) each for 3 months within that single year. It’s funny how I ended in Georgia in 2022.\n##The Epidemiologist R Handbook\nI find this handbook much helpful in a sense that it starts from basic topic and takes us along a large topics of Epidemiology. I joined PhD at UGA with no prior epidemiological background and this handbook has been really handy. Please feel free to check this out.\nhttps://epirhandbook.com/en/index.html"
+  },
+  {
+    "objectID": "coding_exercise.html#plot-1",
+    "href": "coding_exercise.html#plot-1",
+    "title": "R Coding Exercise",
+    "section": "Plot 1",
+    "text": "Plot 1\n\n# Plotting life expectancy as a function of infant mortality in the year 2000\nggplot(data = africadata_2000,\n       (aes(x = infant_mortality, y = life_expectancy))) +\n  theme_classic() +\n  geom_point(size = 1.0) +\n  labs(title = \"Life expectancy as a function of infant mortality in the year 2000\", \n       x = \"Infant Mortality\", y = \"Life Expectancy (In Years)\") +\n  theme(axis.text = element_text(face = \"bold\"), plot.title = element_text(hjust = 0.5, size = 14),\n        axis.title = element_text(size = 14))"
+  },
+  {
+    "objectID": "coding_exercise.html#plot-2",
+    "href": "coding_exercise.html#plot-2",
+    "title": "R Coding Exercise",
+    "section": "Plot 2",
+    "text": "Plot 2\n\n# Plotting life expectancy as a function of population size in the year 2000\nggplot(data = africadata_2000,\n       (aes(x = population, y = life_expectancy))) +\n  theme_classic() +\n  geom_point(size = 1.0) +\n  scale_x_continuous(trans = 'log10') +\n  labs(title = \"Life expectancy as a function of population size in the year 2000\", \n       x = \"Population (In Logscale)\", y = \"Life Expectancy (In Years)\") +\n  theme(axis.text = element_text(face = \"bold\"), plot.title =   element_text(hjust = 0.5, size = 14),\n        axis.title = element_text(size = 14))"
+  },
+  {
+    "objectID": "coding_exercise.html#creating-an-object-named-africadata",
+    "href": "coding_exercise.html#creating-an-object-named-africadata",
+    "title": "R Coding Exercise",
+    "section": "Creating an object named ‘africadata’",
+    "text": "Creating an object named ‘africadata’\n\n# Creating an object africadata containing only the African countries\nafricadata <- gapminder %>% filter(continent == \"Africa\")\n\n# Looking at the structure and summary of object (africadata)\nstr(africadata)\n\n'data.frame':   2907 obs. of  9 variables:\n $ country         : Factor w/ 185 levels \"Albania\",\"Algeria\",..: 2 3 18 22 26 27 29 31 32 33 ...\n $ year            : int  1960 1960 1960 1960 1960 1960 1960 1960 1960 1960 ...\n $ infant_mortality: num  148 208 187 116 161 ...\n $ life_expectancy : num  47.5 36 38.3 50.3 35.2 ...\n $ fertility       : num  7.65 7.32 6.28 6.62 6.29 6.95 5.65 6.89 5.84 6.25 ...\n $ population      : num  11124892 5270844 2431620 524029 4829291 ...\n $ gdp             : num  1.38e+10 NA 6.22e+08 1.24e+08 5.97e+08 ...\n $ continent       : Factor w/ 5 levels \"Africa\",\"Americas\",..: 1 1 1 1 1 1 1 1 1 1 ...\n $ region          : Factor w/ 22 levels \"Australia and New Zealand\",..: 11 10 20 17 20 5 10 20 10 10 ...\n\nsummary(africadata)\n\n         country          year      infant_mortality life_expectancy\n Algeria     :  57   Min.   :1960   Min.   : 11.40   Min.   :13.20  \n Angola      :  57   1st Qu.:1974   1st Qu.: 62.20   1st Qu.:48.23  \n Benin       :  57   Median :1988   Median : 93.40   Median :53.98  \n Botswana    :  57   Mean   :1988   Mean   : 95.12   Mean   :54.38  \n Burkina Faso:  57   3rd Qu.:2002   3rd Qu.:124.70   3rd Qu.:60.10  \n Burundi     :  57   Max.   :2016   Max.   :237.40   Max.   :77.60  \n (Other)     :2565                  NA's   :226                     \n   fertility       population             gdp               continent   \n Min.   :1.500   Min.   :    41538   Min.   :4.659e+07   Africa  :2907  \n 1st Qu.:5.160   1st Qu.:  1605232   1st Qu.:8.373e+08   Americas:   0  \n Median :6.160   Median :  5570982   Median :2.448e+09   Asia    :   0  \n Mean   :5.851   Mean   : 12235961   Mean   :9.346e+09   Europe  :   0  \n 3rd Qu.:6.860   3rd Qu.: 13888152   3rd Qu.:6.552e+09   Oceania :   0  \n Max.   :8.450   Max.   :182201962   Max.   :1.935e+11                  \n NA's   :51      NA's   :51          NA's   :637                        \n                       region   \n Eastern Africa           :912  \n Western Africa           :912  \n Middle Africa            :456  \n Northern Africa          :342  \n Southern Africa          :285  \n Australia and New Zealand:  0  \n (Other)                  :  0  \n\nglimpse(africadata)\n\nRows: 2,907\nColumns: 9\n$ country          <fct> \"Algeria\", \"Angola\", \"Benin\", \"Botswana\", \"Burkina Fa…\n$ year             <int> 1960, 1960, 1960, 1960, 1960, 1960, 1960, 1960, 1960,…\n$ infant_mortality <dbl> 148.2, 208.0, 186.9, 115.5, 161.3, 145.1, 166.9, NA, …\n$ life_expectancy  <dbl> 47.50, 35.98, 38.29, 50.34, 35.21, 40.58, 43.46, 50.1…\n$ fertility        <dbl> 7.65, 7.32, 6.28, 6.62, 6.29, 6.95, 5.65, 6.89, 5.84,…\n$ population       <dbl> 11124892, 5270844, 2431620, 524029, 4829291, 2786740,…\n$ gdp              <dbl> 13828152297, NA, 621797131, 124460933, 596612183, 341…\n$ continent        <fct> Africa, Africa, Africa, Africa, Africa, Africa, Afric…\n$ region           <fct> Northern Africa, Middle Africa, Western Africa, South…"
+  },
+  {
+    "objectID": "coding_exercise.html#creating-an-object-named-infantmort_lifeexp",
+    "href": "coding_exercise.html#creating-an-object-named-infantmort_lifeexp",
+    "title": "R Coding Exercise",
+    "section": "Creating an object named ‘infantmort_lifeexp’",
+    "text": "Creating an object named ‘infantmort_lifeexp’\n\n# Creating an object infantmort_lifeexp containing only infant_mortality and life_expectancy variables\ninfantmort_lifeexp <- africadata %>%\n                      select(infant_mortality, life_expectancy)\n\n# Looking at the structure and summary of object (infantmort_lifeexp)\nstr(infantmort_lifeexp)\n\n'data.frame':   2907 obs. of  2 variables:\n $ infant_mortality: num  148 208 187 116 161 ...\n $ life_expectancy : num  47.5 36 38.3 50.3 35.2 ...\n\nsummary(infantmort_lifeexp)\n\n infant_mortality life_expectancy\n Min.   : 11.40   Min.   :13.20  \n 1st Qu.: 62.20   1st Qu.:48.23  \n Median : 93.40   Median :53.98  \n Mean   : 95.12   Mean   :54.38  \n 3rd Qu.:124.70   3rd Qu.:60.10  \n Max.   :237.40   Max.   :77.60  \n NA's   :226                     \n\nglimpse(infantmort_lifeexp)\n\nRows: 2,907\nColumns: 2\n$ infant_mortality <dbl> 148.2, 208.0, 186.9, 115.5, 161.3, 145.1, 166.9, NA, …\n$ life_expectancy  <dbl> 47.50, 35.98, 38.29, 50.34, 35.21, 40.58, 43.46, 50.1…"
+  },
+  {
+    "objectID": "coding_exercise.html#creating-an-object-named-pop_lifeexp",
+    "href": "coding_exercise.html#creating-an-object-named-pop_lifeexp",
+    "title": "R Coding Exercise",
+    "section": "Creating an object named ‘pop_lifeexp’",
+    "text": "Creating an object named ‘pop_lifeexp’\n\n# Creating an object pop_lifeexp containing only population and life_expectancy variables\npop_lifeexp <- africadata %>%\n                      select(population, life_expectancy)\n\n# Looking at the structure and summary of object (pop_lifeexp)\nstr(pop_lifeexp)\n\n'data.frame':   2907 obs. of  2 variables:\n $ population     : num  11124892 5270844 2431620 524029 4829291 ...\n $ life_expectancy: num  47.5 36 38.3 50.3 35.2 ...\n\nsummary(pop_lifeexp)\n\n   population        life_expectancy\n Min.   :    41538   Min.   :13.20  \n 1st Qu.:  1605232   1st Qu.:48.23  \n Median :  5570982   Median :53.98  \n Mean   : 12235961   Mean   :54.38  \n 3rd Qu.: 13888152   3rd Qu.:60.10  \n Max.   :182201962   Max.   :77.60  \n NA's   :51                         \n\nglimpse(pop_lifeexp)\n\nRows: 2,907\nColumns: 2\n$ population      <dbl> 11124892, 5270844, 2431620, 524029, 4829291, 2786740, …\n$ life_expectancy <dbl> 47.50, 35.98, 38.29, 50.34, 35.21, 40.58, 43.46, 50.12…"
+  },
+  {
+    "objectID": "coding_exercise.html#based-on-the-p-values-for-each-fit-we-found-statistically-significant-negative-correlation-between-infant-mortality-and-life-expectancy-in-the-year-2000-p-value-2.83e-08.-in-addition-to-this-we-found-no-statistically-significant-correlation-between-population-size-and-life-expectancy-in-the-year-2000-p-value-0.616.",
+    "href": "coding_exercise.html#based-on-the-p-values-for-each-fit-we-found-statistically-significant-negative-correlation-between-infant-mortality-and-life-expectancy-in-the-year-2000-p-value-2.83e-08.-in-addition-to-this-we-found-no-statistically-significant-correlation-between-population-size-and-life-expectancy-in-the-year-2000-p-value-0.616.",
+    "title": "R Coding Exercise",
+    "section": "Based on the p-values for each fit, we found statistically significant negative correlation between infant mortality and life expectancy in the year 2000 (P-value: 2.83e-08). In addition to this, we found no statistically significant correlation between population size and life expectancy in the year 2000 (P-value: 0.616).",
+    "text": "Based on the p-values for each fit, we found statistically significant negative correlation between infant mortality and life expectancy in the year 2000 (P-value: 2.83e-08). In addition to this, we found no statistically significant correlation between population size and life expectancy in the year 2000 (P-value: 0.616)."
   }
 ]
