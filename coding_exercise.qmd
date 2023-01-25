@@ -99,7 +99,7 @@ ggplot(data = pop_lifeexp,
         axis.title = element_text(size = 14))
 ```
 
-# Checking for data missingness
+# Checking data missingness
 
 ```{r}
 # Looking at the years having missing data for infant mortality in africadata
