@@ -1,0 +1,153 @@
+---
+title: "MADA Module 4: Data Analysis Exercise"
+editor: visual
+---
+
+**Source of Data:** The dataset used for this analysis is obtained from the CDC's data website <https://data.cdc.gov/NCHS/Provisional-COVID-19-Deaths-by-Race-and-Hispanic-O/ks3g-spdg>. This dataset contains information about the deaths from COVID-19, pneumonia, influenza, and total deaths from the different states of the US including Puerto Rico during 2020-2023.
+
+**LOADING AND PROCESSING DATA**
+
+```{r}
+# Loading the required packages
+library(readr)
+library(tidyverse)
+library(naniar)
+library(dplyr)
+library(ggplot2)
+
+# Loading the data
+covid19mod4 <- read_csv("module4_dataanalysis_exercise/data/raw_data/covid19_deaths_race_hispanic_origin_age.csv")
+head(covid19mod4, n = 10)
+dim(covid19mod4)
+```
+
+**DATA CLEANING**
+
+```{r}
+# Looking at the variables
+colnames(covid19mod4)
+
+# Changing the variable names to lower case for working conveniance
+names(covid19mod4) <- tolower(names(covid19mod4))
+colnames(covid19mod4)
+
+# Renaming the variables
+covid19mod4 <- covid19mod4 %>%
+  rename("age" = "age group",
+         "race" = "race and hispanic origin group",
+         "covid19_deaths" = "covid-19 deaths",
+         "total_deaths" = "total deaths",
+         "pneumonia_deaths" = "pneumonia deaths",
+         "pneumonia_and_covid19_deaths" = "pneumonia and covid-19 deaths",
+         "influenza_deaths" = "influenza deaths",
+         "pneumonia_influenza_or_covid19_deaths" = "pneumonia, influenza, or covid-19 deaths")
+colnames(covid19mod4)       
+```
+
+```{r}
+# Let's create an object that contains only the variables that will be used in this data analysis exercise
+covid19mod4_main <- covid19mod4 %>% select(state, age, race, covid19_deaths, pneumonia_deaths, influenza_deaths,
+                                           pneumonia_and_covid19_deaths, pneumonia_influenza_or_covid19_deaths, total_deaths)
+glimpse(covid19mod4_main)
+
+# Checking if there are any missing data  
+any(is.na(covid19mod4_main))
+
+# Let's go and remove NAs from each columns of the object `covid19mod4_main`
+covid19mod4_main <- covid19mod4_main %>% 
+                        drop_na(state, age, race, covid19_deaths, pneumonia_deaths, influenza_deaths,
+                               pneumonia_and_covid19_deaths, pneumonia_influenza_or_covid19_deaths, total_deaths)
+
+# Making sure there are no missing values in any columns of the object `covid19mod4_main`
+any(is.na(covid19mod4_main))
+gg_miss_var(covid19mod4_main)
+```
+
+```{r}
+# Let's look at the age variable of the object `covid19mod4_main`
+unique(covid19mod4_main$age)
+
+# Removing word "years" from `age` column values
+covid19mod4_main$age<-gsub(" years","",as.character(covid19mod4_main$age))
+unique(covid19mod4_main$age)
+class(covid19mod4_main$age)
+
+# Changing '85 and over' age category into '85+' category for our easiness and filtering only the age categories starting `1-4` to `85+` years categories with even 4 years spacing
+covid19mod4_main$age[covid19mod4_main$age == '85 and over'] <- '85+'
+covid19mod4_main <- 
+  filter(covid19mod4_main, age %in% c("1-4", "5-14", "15-24", "25-34", "35-44", "45-54", "55-64", "65-74", "75-84", "85+"))
+unique(covid19mod4_main$age)
+```
+
+```{r}
+# Let's look at the race variable of the object `covid19mod4_main`
+unique(covid19mod4_main$race)
+
+# Removing `Non-Hispanic More than one race` and `Unknown` categories of race
+covid19mod4_main <- 
+  filter(covid19mod4_main, race %in% c("Non-Hispanic White", "Non-Hispanic Black", "Non-Hispanic American Indian or Alaska Native", "Non-Hispanic Asian", "Non-Hispanic Native Hawaiian or Other Pacific Islander", "Hispanic"))
+unique(covid19mod4_main$race)
+```
+
+```{r}
+# Let's look at the state variable of the object `covid19mod4_main`
+unique(covid19mod4_main$state)
+
+# Removing `United States`, `Puerto Rico`, `District of Columbia`, and `New York City` so that the object `covid19mod4_main` includes only 50 states data
+covid19mod4_main <- covid19mod4_main[-c(which(covid19mod4_main$state == "United States")), ]
+covid19mod4_main <- covid19mod4_main[-c(which(covid19mod4_main$state == "Puerto Rico")), ]
+covid19mod4_main <- covid19mod4_main[-c(which(covid19mod4_main$state == "District of Columbia")), ]
+covid19mod4_main <- covid19mod4_main[-c(which(covid19mod4_main$state == "New York City")), ]
+unique(covid19mod4_main$state)
+
+# Since we have no missing data and our data is cleaned as we wanted, the object covid19mod4_main is ready to be used for subsequent data analysis and data visualization.
+```
+
+**DATA EXPLORATION AND VISUALIZATION**
+
+```{r}
+# Let's look at the number of deaths from COVID-19 as per people's race during 2020-2023
+covid19death_race <- covid19mod4_main %>% group_by(race) %>%
+ summarize(sum = sum(covid19_deaths, na.rm=T))
+
+# Renaming column `sum` into `covid19_deaths_by_race`
+covid19death_race <- covid19death_race %>% rename("covid19_deaths_by_race" = "sum")
+covid19death_race <- covid19death_race %>%
+  arrange(desc(`covid19_deaths_by_race`))
+covid19death_race
+```
+
+```{r}
+# Plotting the race versus COVID-19 deaths in different states of the US for 2020-23
+ggplot(data = covid19death_race, aes(x = reorder(race, -covid19_deaths_by_race), covid19_deaths_by_race,
+                                     fill = race)) +
+  geom_bar(stat = "identity") +
+  geom_col() +
+  geom_text(aes(y = covid19_deaths_by_race, label = covid19_deaths_by_race), vjust = -0.5,
+            check_overlap = FALSE) +
+  labs(title = "COVID-19 Deaths by Race in the US", 
+       x = "Race", y = "Number of COVID-19 Deaths") +
+  theme(legend.position = "right", 
+        plot.title = element_text(hjust=0.5),
+        legend.background = element_rect(fill = "white", color = 1),
+        axis.text.x = element_blank(),
+        axis.title = element_text(size = 14),
+        axis.ticks.x = element_blank())
+```
+
+**SAVING CLEANED DATASET AS A RDS FILE**
+
+```{r}
+# Saving cleaned `covid19mod4_main` as a rds file
+saveRDS(covid19mod4_main, "module4_dataanalysis_exercise/data/processed_data/covid19mod4_main.rds")
+```
+
+**SUMMARY TABLE**
+
+```{r}
+#| label: tbl-summarytable
+#| tbl-cap: "Data summary table."
+#| echo: FALSE
+summarizing_table=readRDS("module4_dataanalysis_exercise/data/processed_data/covid19mod4_main.rds")
+knitr::kable(summarizing_table)
+```
