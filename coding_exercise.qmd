@@ -166,3 +166,76 @@ summary(fit2)
 # Conclusion
 
 **Based on the p-values for each fit, we found statistically significant negative correlation between infant mortality and life expectancy in the year 2000 (p-value: 2.83e-08) while we found no statistically significant correlation between population size and life expectancy in the year 2000 (p-value: 0.616).**
+
+**---------------------------------------**
+
+**THIS SECTION ADDED BY NICOLE LUISI**
+
+**---------------------------------------**
+
+#Create some plots
+
+```{r}
+#| warning: false
+# Install and load new packages
+#install.packages(c("plotly", "broom"))
+library(plotly)
+library(broom)
+```
+
+```{r}
+# Create subset for 4 specific regions
+africadata_limitregion <- africadata %>%
+      filter(region %in% c("Northern Africa", "Southern Africa", "Western Africa", "Middle Africa"))
+# Set color palette
+manualcolors<-c('coral', 'forestgreen', 'darkorange1', 'firebrick4', 'cornflowerblue', 'darkseagreen', 'cyan3', 
+                'brown1', 'blueviolet')
+# Generate figure
+fig <- plot_ly(data=africadata_limitregion, x = ~year, y = ~life_expectancy, text = ~region, type = 'scatter', mode = 'markers', color = ~region, colors=manualcolors)
+fig <- fig %>% layout(title = 'Life Expectancy (years) by Year in 4 Regions of Africa',
+         yaxis = list(title = "Life Expectancy (yrs)"),
+         xaxis = list(title = "Year"))
+# View figure, hover for data points
+fig
+```
+
+```{r}
+#library(ggplot2)
+# Generate figure
+theme_set(
+  theme_bw() + 
+    theme(legend.position = "top"))
+ggplot(africadata, aes(x = gdp, y = infant_mortality)) + 
+  geom_point(aes(color = region, size = fertility), alpha = 0.5) +
+  scale_color_manual(values = c("#d1495b", "#edae49", "#66a182", "#2e4057", "79b7c5")) +
+  scale_size(range = c(0.5, 6))  +
+  xlab("GDP") +
+  ylab("Infant Mortality (yrs)") +
+  ggtitle("Infant Mortality by GDP, with Region as Color and Size as Fertility")
+```
+
+#Fit a model
+
+```{r}
+# Model for life_expectancy ~ fertility for 4 regions in Africa
+newmodel <- lm(life_expectancy ~ fertility, data = africadata_limitregion)
+# Summary for new model
+summary(newmodel)
+# Use broom to make table for new model
+tidy(newmodel)
+# Create function to summarize results another way
+customoutput <- function (fit) {
+require(ggplot2)
+ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
+  geom_point() +
+  xlab("Fertility") +
+  ylab("Life Expectancy (yrs)") +
+  ggtitle("Life Expectancy and Fertility in 4 Regions of Africa") + 
+  stat_smooth(method = "lm", col = "red") +
+  labs(title = paste("Adj R2 = ",signif(summary(fit)$adj.r.squared, 5),
+                     "Intercept =",signif(fit$coef[[1]],5 ),
+                     " Slope =",signif(fit$coef[[2]], 5),
+                     " P =",signif(summary(fit)$coef[2,4], 5)))
+}
+customoutput(newmodel)
+```
