@@ -151,3 +151,86 @@ saveRDS(covid19mod4_main, "module4_dataanalysis_exercise/data/processed_data/cov
 summarizing_table=readRDS("module4_dataanalysis_exercise/data/processed_data/covid19mod4_main.rds")
 knitr::kable(summarizing_table)
 ```
+
+**this section added by Yao Lu**
+
+For finding if there is competition between covid and influenza. First we calculate the correlation coefficient.
+
+```{r}
+cor(covid19mod4_main$covid19_deaths,covid19mod4_main$influenza_deaths)
+```
+
+Here we find that, there is a high correlation coefficient, but why. We didn't add the total population of the state. So the absolute number of death are confounded by the number of population of state. We can add total population later to our data set, then calculation the relative death rates. Then get correlation coefficient of relative death rate to check the competition.
+
+If we just would like to use this data set. We can still build a model to test if the deaths are related with age. Here I add a new variable called percentage of deaths. Take covid-19 death for example.
+
+```{r}
+
+# Let's look at the number of deaths from COVID-19 as per people's state during 2020-2023
+covid19death_state <- covid19mod4_main %>% group_by(state) %>%
+ summarize(sum = sum(covid19_deaths, na.rm=T))
+
+#add a covid total column
+covid19mod4_main$covidtotal <- NA
+
+table <- table(covid19mod4_main$state)
+#calculate the number of rows for each state
+norow <-as.data.frame( table[1:50])
+
+#give the value of covidtotal for each state, here we just assume the State are ranked by alphabet, if not we can use order function. 
+covid19mod4_main <- covid19mod4_main[order(covid19mod4_main$state),]
+covid19death_state <- covid19death_state[order(covid19death_state$state),]
+norow <- norow[order(norow$Var1),]
+
+  covid19mod4_main$covidtotal <- rep(covid19death_state$sum[1:50],norow$Freq)
+
+covid19mod4_main$covidperc <- covid19mod4_main$covid19_deaths/covid19mod4_main$covidtotal
+
+```
+
+We will try to model. First, take age as categorical variables. Second, take age as continuous variables.
+
+```{r}
+lm1 <- lm(covid19mod4_main$covidperc ~ covid19mod4_main$age)
+anova(lm1)
+
+summary(lm1)
+
+TukeyHSD(aov(lm(covid19mod4_main$covidperc ~ covid19mod4_main$age)))
+```
+
+In this model, the F test shows that the percentage of covid death are influenced by age group.
+
+Turkey test also shows that there are significant difference between some groups, we can summarize some of the groups with close age to reduce the number of age group.
+
+Then we add a new numerical variable of age. 
+
+
+
+```{r}
+table(covid19mod4_main$age)
+
+covid19mod4_main <- covid19mod4_main[order(covid19mod4_main$age),]
+
+table(covid19mod4_main$age)
+
+norow1 <- as.data.frame(table(covid19mod4_main$age))
+
+covid19mod4_main$age1 <- rep(c((1+4)/2,(15+24)/2,(25+34)/2,(35+44)/2,(45+54)/2,(5+14)/2,(55+64)/2,(65+74)/2,(75+84)/2, 85),norow1$Freq)
+
+
+#remove 85+
+covid19mod4_main <- 
+  filter(covid19mod4_main, !(age1 %in% 85))
+
+#lm
+
+lm2 <- lm(covid19mod4_main$covidperc~covid19mod4_main$age1)
+
+summary(lm2)
+
+```
+
+Here we can see that there is a significant positive trend between age and percentage of covid death.
+
+
