@@ -5,4 +5,73 @@ output:
     toc: FALSE
 ---
 
-Placeholder file for the future visualization exercise.
+**GRAPHIC PLOT SELECTION FOR DATA VISUALIZATION**
+
+For this data visualization exercise, I chose to recreate the graphic plot from <https://ourworldindata.org/cancer>. The graphic looked really interactive with many small details and I thought that it would be really cool trying to recreate it. Here is the static graphic image for the reference.
+
+![](cancer-death-rates-in-the-us.png){fig-align="center"} **LOADING THE REQUIRED PACKAGES**
+
+```{r}
+#| warning: false
+library(here)
+library(readr)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(plotly)
+library(tidyr)
+library(plyr)
+```
+
+**LOADING DATA FILE AND LOOKING AT THE DATA**
+
+The data file was downloaded from <https://ourworldindata.org/grapher/cancer-death-rates-in-the-us>. The data seemed pretty clean and included mostly the only variables to be used for creating the given graph.
+
+```{r}
+# Loading data
+cancerdata <- read_csv("data/cancer-death-rates-in-the-us.csv")
+head(cancerdata)
+glimpse(cancerdata)
+```
+
+**DATA EXPLORATION**
+
+```{r}
+#Excluding Entity and Code columns from the dataset
+cancerdata1 <- cancerdata %>% select(-c(Entity, Code))
+head(cancerdata1)
+
+# Changing the shape of data for keeping all cancer types in one column and their death rates in another column
+cancerdata_main <- pivot_longer(cancerdata1, cols = !Year, names_to = "Cancer_types", values_to = "Death_rate")
+head(cancerdata_main)
+```
+
+**DATA VISUALIZATION**
+
+```{r}
+#| warning: false
+# Creating the plot
+fig <- plot_ly(data = cancerdata_main, x = ~Year, y = ~Death_rate, type = 'scatter', mode = 'lines', color = ~Cancer_types)
+fig
+
+# Adding title of the plot
+fig <- fig %>% layout(title = "Cancer death rates in the United States over the long-run")
+
+# Creating hovermode in the plot
+fig <- fig %>%
+  layout(hovermode = "x unified")
+fig
+
+# Changing x-axis and y-axis as per the original plot
+fig1 <- fig %>%
+  layout(xaxis = list(title = F,
+    tickvals = list(1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2011)),
+    yaxis = list(title = F,
+    tickvals = list(0, 20, 40, 60, 80)),
+    legend = list(itemclick = "toggleothers"))
+fig1
+```
+
+**COMMENTS**
+
+The above plot looks similar to the original plot but I had hard time trying to figure out many small details mostly related to legend part. For example, making the legend linked to each respective plot line, changing line to marker type for legend shapes, and making same color for similar types of cancer in male and female. Overall, the plot depicts the same information as given by the original plot and I will still be working on this plot in the future to figure out the options that I had hard time figuring out this time.
