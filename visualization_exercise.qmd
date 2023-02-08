@@ -51,7 +51,7 @@ head(cancerdata_main)
 ```{r}
 #| warning: false
 # Creating the plot
-fig <- plot_ly(data = cancerdata_main, x = ~Year, y = ~Death_rate, type = 'scatter', mode = 'lines', color = ~Cancer_types)
+fig <- plot_ly(data = cancerdata_main, x = ~Year, y = ~Death_rate, type = 'scatter', mode = 'lines', color = ~Cancer_types, colors = c("red", "blue", "black", "brown", "#32a852", "#c10dd1"))
 fig
 
 # Adding title of the plot
@@ -74,4 +74,4 @@ fig1
 
 **COMMENTS**
 
-The above plot looks similar to the original plot but I had hard time trying to figure out many small details mostly related to legend part. For example, making the legend linked to each respective plot line, changing line to marker type for legend shapes, and making same color for similar types of cancer in male and female. Overall, the plot depicts the same information as given by the original plot and I will still be working on this plot in the future to figure out the options that I had hard time figuring out this time.
+The above plot looks similar to the original plot but I had hard time trying to figure out some small details mostly related to legend part. For example, making the legend linked to each respective plot line and changing the color of legend text into their respective line types. Overall, the plot depicts the same information as given by the original plot and I will still be working on this plot in the future to figure out the options that I had hard time figuring out this time.
