@@ -5,4 +5,107 @@ output:
     toc: FALSE
 ---
 
-Placeholder file for the future Tidy Tuesday exercise.
+**LOADING REQUIRED PACKAGES**
+
+```{r}
+# Loading required packages
+library(readr)
+library(tidyverse)
+library(dplyr)
+library(naniar)
+library(skimr)
+```
+
+**LOADING AND LOOKING AT 2023 WEEK 7 TIDYTUESDAY DATA**
+
+```{r}
+# Loading the TidyTuesday data for week 7 of 2023 (02/14/2023)
+tidydata <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-02-14/age_gaps.csv')
+glimpse(tidydata)
+skim(tidydata)
+```
+**DATA EXPLORATION**
+
+```{r}
+# Lets look at the number of unique movie names for the given years in data
+length(unique(tidydata$movie_name))
+
+# Lets look at the number of released movies for each year
+table(tidydata$release_year)
+
+# Lets look at the range of age for actor 1 and 2
+tidydata$actor_1_age %>% range()
+tidydata$actor_2_age %>% range()
+
+# Lets look at the range of age difference
+tidydata$age_difference %>% range()
+```
+
+**DATA VISUALIZATION**
+
+**VISUALIZING AVERAGE AGE DIFFERENCE OVER YEARS IN MOVIES**
+
+```{r}
+# Lets look at the trend of age difference in released movies over time
+# Creating an object `avgage_year` having average age difference per year
+tidydata_agegap <- tidydata %>% select(release_year, age_difference)
+
+avgage_year <- tidydata_agegap %>% group_by(release_year) %>% 
+            summarize_at("age_difference", mean) %>% ungroup()
+
+# Plotting average age difference over years
+avgage_year %>% ggplot() + 
+  geom_line(aes(x = release_year, y = age_difference), color = "red")+
+  geom_point(aes(x = release_year, y = age_difference), color = "red")+
+  theme_classic()+
+  labs(x = "Movie Release Year", y = "Age Difference", title = "Age difference in released movies during 1935-2022") +
+  scale_x_continuous(breaks=c(1935, 1945, 1955, 1965, 1975, 1985, 1995, 2005, 2015, 2025)) + 
+  theme(axis.text = element_text(face="bold"), plot.title = element_text(hjust = 0.5, size = 14),
+        axis.title = element_text(size = 14))
+```
+
+**VISUALIZING AGE DIFFERENCE IN RELEASED MOVIES OVER YEARS BY OLDER AND YOUNGER CHARACTER GENDER**
+
+```{r}
+# Lets create an object `agediff_gender` representing older character's gender in the released movies using character_1_gender column
+agediff_gender <- tidydata %>%
+  mutate(older_gender = case_when(
+    character_1_gender == "man" ~ "Male",
+    character_1_gender == "woman" ~ "Female"))
+
+agediff_gender %>% ggplot(aes(x = older_gender, y = age_difference, 
+                              fill = older_gender)) + 
+  geom_boxplot() + 
+  stat_summary(fun = "mean", geom = "point", shape = 10, size = 2, color = "black") + 
+  scale_fill_manual(values=c("red", "#22a861")) +
+  theme_classic() +
+  ggtitle("Age Difference as per Older Character's Gender") + 
+  labs(x="Older Character Gender", y="Age Difference (In Years)") 
+```
+```{r}
+# Lets create an object `agediff_gender` representing younger character's gender in the released movies using character_2_gender column
+agediff_gender <- tidydata %>%
+  mutate(younger_gender = case_when(
+    character_2_gender == "man" ~ "Male",
+    character_2_gender == "woman" ~ "Female"))
+
+agediff_gender %>% ggplot(aes(x = younger_gender, y = age_difference, 
+                              fill = younger_gender)) + 
+  geom_boxplot() + 
+  stat_summary(fun = "mean", geom = "point", shape = 10, size = 2, color = "black") + 
+  scale_fill_manual(values=c("red", "#22a861")) +
+  theme_classic() +
+  ggtitle("Age Difference as per Younger Character's Gender") + 
+  labs(x="Younger Character Gender", y="Age Difference (In Years)") 
+```
+
+**TEST STATISTIC**
+
+```{r}
+# Fitting a model to see if there exists an association between age difference and the gender of the older and younger characters
+fit1 <- lm(age_difference ~ factor(character_1_gender), agediff_gender)
+summary(fit1)
+
+fit2 <- lm(age_difference ~ factor(character_2_gender), agediff_gender)
+summary(fit2)
+```
