@@ -99,6 +99,7 @@ agediff_gender %>% ggplot(aes(x = younger_gender, y = age_difference,
   ggtitle("Age Difference as per Younger Character's Gender") + 
   labs(x="Younger Character Gender", y="Age Difference (In Years)") 
 ```
+
 **TEST STATISTIC**
 
 ```{r}
