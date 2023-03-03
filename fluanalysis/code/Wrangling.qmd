@@ -1,0 +1,42 @@
+---
+title: "wrangling"
+format: html
+editor: visual
+---
+
+## WRANGLING FLU ANALYSIS DATA
+
+**LOADING REQUIRED PACKAGES**
+
+```{r}
+library(here)
+library(tidyverse)
+library(dplyr)
+```
+
+**LOADING DATA**
+
+```{r}
+fludata <- readRDS(here("fluanalysis", "data", "SympAct_Any_Pos.Rda"))
+glimpse(fludata)
+```
+
+**DATA WRANGLING**
+
+```{r}
+# Removing all variables that have Score or Total or FluA or FluB or Dxname or Activity or Unique.Visit in their name
+fludata <- fludata %>%
+  dplyr::select(-contains(c("Score", "Total", "FluA", "FluB", "Dxname", "Activity", "Unique.Visit")))
+
+# Removing NA observations
+fludata <- fludata %>% drop_na()
+
+# Looking at the fludata if it was cleaned as we wanted
+glimpse(fludata)
+```
+
+**SAVING CLEAN DATA AS RDS FILE**
+
+```{r}
+saveRDS(fludata, file = here("fluanalysis", "data", "fludata_clean.rds"))
+```

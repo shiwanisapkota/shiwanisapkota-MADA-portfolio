@@ -1,0 +1,92 @@
+---
+title: "Fitting"
+format: html
+editor: visual
+---
+
+## FITTING FLU ANALYSIS DATA
+
+**LOADING REQUIRED PACKAGES**
+
+```{r}
+library(here)
+library(tidyverse)
+library(tidymodels)
+library(performance)
+library(vip)
+```
+
+**LOADING DATA**
+
+```{r}
+fludata_clean <- readRDS(here("fluanalysis", "data", "fludata_clean.rds"))
+glimpse(fludata_clean)
+```
+
+**DATA FITTING**
+
+**Fitting a linear model using continuous outcome (Body Temperature)**
+
+```{r}
+# Setting up the linear model
+lm_model <- linear_reg() %>%
+  set_engine("lm")
+
+# Fitting a linear model to the continuous outcome (Body temperature) using only the main predictor of interest (RunnyNose)
+lm_fit1 <- lm_model %>% fit(BodyTemp ~ RunnyNose, data = fludata_clean)
+lm_fit1
+
+# Looking at the results of lm_fit1
+glance(lm_fit1)
+
+# Looking at the additional summary of lm_fit1
+tidy(lm_fit1)
+
+# Fitting a linear model to the continuous outcome (Body temperature) using all the predictors
+lm_fit2 <- lm_model %>% fit(BodyTemp ~ ., data = fludata_clean)
+lm_fit2
+
+# Looking at the results of lm_fit2
+glance(lm_fit2)
+
+# Looking at the additional summary of lm_fit2
+tidy(lm_fit2)
+
+# Comparing lm_fit1 and lm_fit2 on the basis of model performance
+compare_performance(lm_fit1, lm_fit2)
+```
+
+**Here, the model with only main predictor of interest (RunnyNose) seem to be a better fit compared to the full model including all predictors as the model with only main predictor of interest has lower AIC of 2329.3 and higher adj. R2 of 0.086.**
+
+**Fitting a logistic model using categorical outcome (Nausea)**
+
+```{r}
+# Setting up the logistic model
+lm_model1 <- logistic_reg() %>%
+  set_engine("glm")
+
+# Fitting a logistic model to the categorical outcome (Nausea) using only the main predictor of interest (RunnyNose)
+lm_fit3 <- lm_model1 %>% fit(Nausea ~ RunnyNose, data = fludata_clean)
+lm_fit3
+
+# Looking at the results of lm_fit3
+glance(lm_fit3)
+
+# Looking at the additional summary of lm_fit3
+tidy(lm_fit3)
+
+# Fitting a linear model to the continuous outcome (Body temperature) using all the predictors
+lm_fit4 <- lm_model1 %>% fit(Nausea ~ ., data = fludata_clean)
+lm_fit4
+
+# Looking at the results of lm_fit4
+glance(lm_fit4)
+
+# Looking at the additional summary of lm_fit4
+tidy(lm_fit4)
+
+# Comparing lm_fit3 and lm_fit4 on the basis of model performance
+compare_performance(lm_fit3, lm_fit4)
+```
+
+**Here, the full model including all predictors seem to be a better fit compared to the model with only main predictor of interest (RunnyNose) as the full model has lower AIC of 821.5.**

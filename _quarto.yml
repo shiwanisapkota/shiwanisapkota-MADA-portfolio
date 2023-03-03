@@ -18,6 +18,14 @@ website:
             href: ./visualization_exercise.html
           - text: "Tidy Tuesday Exercise"
             href: ./tidytuesday_exercise.html
+      - text: "Flu Analysis"
+        menu:
+          - text: "Wrangling"
+            href: ./fluanalysis/code/Wrangling.html
+          - text: "Exploration"
+            href: ./fluanalysis/code/Exploration.html
+          - text: "Fitting"
+            href: ./fluanalysis/code/Fitting.html
     right:
       - icon: github 
         href: https://github.com/shiwanisapkota/shiwanisapkota-MADA-portfolio       

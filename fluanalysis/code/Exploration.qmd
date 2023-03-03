@@ -1,0 +1,66 @@
+---
+title: "Exploration"
+format: html
+editor: visual
+---
+
+## EXPLORING FLU ANALYSIS DATA
+
+**LOADING REQUIRED PACKAGES**
+
+```{r}
+library(here)
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+```
+
+**LOADING DATA**
+
+```{r}
+fludata_clean <- readRDS(here("fluanalysis", "data", "fludata_clean.rds"))
+glimpse(fludata_clean)
+```
+
+**DATA EXPLORATION**
+
+**Creating summary of data variables**
+
+```{r}
+# Creating summary of all variables
+summary(fludata_clean)
+```
+
+**Creating histograms using our outcomes of interest: Body temperature and Nausea**
+
+```{r}
+# Creating histogram of Body temperature variable
+ggplot(fludata_clean, aes(x = BodyTemp)) +
+  geom_histogram()
+
+# Creating histogram of Nausea variable
+ggplot(fludata_clean, aes(x = Nausea)) +
+  geom_histogram(stat = "count")
+
+# Creating histogram of Nausea and Insomnia variables
+ggplot(fludata_clean, aes(x= Nausea, fill = Insomnia)) +
+  geom_histogram(stat="count")
+
+# Creating histogram of Nausea and Breathless variables
+ggplot(fludata_clean, aes(x= Nausea, fill = Breathless)) +
+  geom_histogram(stat="count")
+```
+
+**Creating boxplots using our outcome of interest: Body temperature**
+
+```{r}
+# Creating boxplot of Cough intensity and Body temperature variables
+ggplot(fludata_clean, aes(x = factor(CoughIntensity), y = BodyTemp)) +
+  geom_boxplot() +
+  labs(x = "Cough Intensity", y = "Body Temperature")
+
+# Creating boxplot of Myalgia and Body temperature variables
+ggplot(fludata_clean, aes(x = factor(Myalgia), y = BodyTemp)) +
+  geom_boxplot() +
+  labs(x = "Myalgia", y = "Body Temperature")
+```
