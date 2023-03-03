@@ -1,10 +1,8 @@
 ---
-title: "Fitting"
+title: "Fitting of Flu Data"
 format: html
 editor: visual
 ---
-
-## FITTING FLU ANALYSIS DATA
 
 **LOADING REQUIRED PACKAGES**
 

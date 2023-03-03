@@ -1,10 +1,8 @@
 ---
-title: "wrangling"
+title: "Wrangling of Flu Data"
 format: html
 editor: visual
 ---
-
-## WRANGLING FLU ANALYSIS DATA
 
 **LOADING REQUIRED PACKAGES**
 

@@ -1,10 +1,8 @@
 ---
-title: "Exploration"
+title: "Exploration of Flu Data"
 format: html
 editor: visual
 ---
-
-## EXPLORING FLU ANALYSIS DATA
 
 **LOADING REQUIRED PACKAGES**
 
