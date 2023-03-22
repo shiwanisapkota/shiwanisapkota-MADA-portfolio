@@ -1,0 +1,141 @@
+---
+title: "Module 10: Improving Model Fits"
+format: html
+editor: visual
+---
+
+**LOADING REQUIRED PACKAGES**
+
+```{r, warning = FALSE}
+library(here)
+library(tidyverse)
+library(tidymodels)
+library(performance)
+library(broom)
+```
+
+**LOADING DATA**
+
+```{r}
+fludata_clean <- readRDS(here("fluanalysis", "data", "fludata_clean.rds"))
+glimpse(fludata_clean)
+```
+
+**DATA SPLITTING**
+
+```{r}
+# Creating a new object to work
+flu_module10 <- fludata_clean
+
+# Setting seed
+set.seed(123)
+
+# Putting 3/4 of the data into the training set
+data_split <- initial_split(flu_module10, prop = 3/4)
+
+# Creating data frames for the two sets
+train_data <- training(data_split)
+test_data  <- testing(data_split)
+```
+
+**FULL MODEL: CREATING RECIPE THAT FITS A LOGISTIC MODEL USING NAUSEA AS OUTCOME OF INTEREST AND ALL OTHER VARIABLES AS PREDICTORS**
+
+```{r}
+# Using Nausea as a categorical outcome of interest and all other variables as predictors
+flu_module10_rec <- recipe(Nausea ~ ., data = train_data)
+
+# Fitting the logistic model
+flu_module10_mod <- logistic_reg() %>% 
+                    set_engine("glm")
+
+# Modelling workflow for pairing model and recipe 
+flu_module10_wflow <- workflow() %>% 
+  add_model(flu_module10_mod) %>% 
+  add_recipe(flu_module10_rec)
+flu_module10_wflow
+
+# Using the resulting predictors for preparing recipe and training the model
+flu_module10_fit <- 
+ flu_module10_wflow %>% 
+  fit(data = train_data)
+
+# Pulling the fitted model object and using tidy() function for getting a tidy tibble of model coefficients
+flu_module10_fit %>% 
+  extract_fit_parsnip() %>% 
+  tidy()
+```
+
+**FULL MODEL: USING TRAINED WORKFLOW TO PREDICT**
+
+```{r, warning = FALSE}
+# Using the trained workflow (flu_module10_fit) to predict with the unseen test data
+predict(flu_module10_fit, test_data)
+
+# Using argument() with the model plus test data for saving them together
+flu_module10_aug <- 
+  augment(flu_module10_fit, test_data)
+  
+flu_module10_aug %>%
+  select(Nausea, .pred_No, .pred_Yes)
+  
+# Creating ROC curve and piping to the autoplot() method
+flu_module10_aug %>% 
+  roc_curve(truth = Nausea, .pred_No) %>% 
+  autoplot()
+
+# Using roc_auc() for estimating the area under the curve 
+flu_module10_aug %>% 
+  roc_auc(truth = Nausea, .pred_No)
+```
+
+**ALTERNATIVE MODEL: USING NAUSEA AS OUTCOME OF INTEREST AND RUNNYNOSE AS MAIN PREDICTOR**
+
+```{r}
+# Using Nausea as a categorical outcome of interest and RunnyNose as main predictor
+flu_module10_rec2 <- recipe(Nausea ~ RunnyNose, data = train_data)
+
+# Fitting the logistic model
+flu_module10_mod2 <- logistic_reg() %>% 
+                    set_engine("glm")
+
+# Modelling workflow for pairing model and recipe 
+flu_module10_wflow2 <- workflow() %>% 
+  add_model(flu_module10_mod2) %>% 
+  add_recipe(flu_module10_rec2)
+flu_module10_wflow2
+
+# Using the resulting predictors for preparing recipe and training the model
+flu_module10_fit2 <- 
+ flu_module10_wflow2 %>% 
+  fit(data = train_data)
+
+# Pulling the fitted model object and using tidy() function for getting a tidy tibble of model coefficients
+flu_module10_fit2 %>% 
+  extract_fit_parsnip() %>% 
+  tidy()
+```
+
+**ALTERNATIVE MODEL: USING TRAINED WORKFLOW TO PREDICT**
+
+```{r, warning = FALSE}
+# Using the trained workflow (flu_module10_fit) to predict with the unseen test data
+predict(flu_module10_fit2, test_data)
+
+# Using argument() with the model plus test data for saving them together
+flu_module10_aug2 <- 
+  augment(flu_module10_fit2, test_data)
+  
+flu_module10_aug2 %>%
+  select(Nausea, .pred_No, .pred_Yes)
+  
+# Creating ROC curve and piping to the autoplot() method
+flu_module10_aug2 %>% 
+  roc_curve(truth = Nausea, .pred_No) %>% 
+  autoplot()
+
+# Using roc_auc() for estimating the area under the curve 
+flu_module10_aug2 %>% 
+  roc_auc(truth = Nausea, .pred_No)
+```
+
+From the above result, we see that the full model (using Nausea as the main outcome of interest and all variables as predictors) has ROC-AUC as 0.71 while the alternative model (using Nausea as the main outcome of interest and RunnyNose as the main predictor) has ROC-AUC as 0.46. So, we can say that for Nausea, the full model with all the predictors is better than the alternative model having only RunnyNose as the main predictor.
