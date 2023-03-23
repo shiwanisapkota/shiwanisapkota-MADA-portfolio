@@ -118,6 +118,15 @@ flu_module10_fit2 %>%
 **ALTERNATIVE MODEL: USING TRAINED WORKFLOW TO PREDICT**
 
 ```{r, warning = FALSE}
+```
+
+```{r, warning = FALSE}
+```
+
+```{r, warning = FALSE}
+```
+
+```{r, warning = FALSE}
 # Using the trained workflow (flu_module10_fit) to predict with the unseen test data
 predict(flu_module10_fit2, test_data)
 
@@ -139,3 +148,113 @@ flu_module10_aug2 %>%
 ```
 
 From the above result, we see that the full model (using Nausea as the main outcome of interest and all variables as predictors) has ROC-AUC as 0.71 while the alternative model (using Nausea as the main outcome of interest and RunnyNose as the main predictor) has ROC-AUC as 0.46. So, we can say that for Nausea, the full model with all the predictors is better than the alternative model having only RunnyNose as the main predictor.
+
+#### **THIS SECTION ADDED BY IRENE CAVROS**
+
+We will first split 75% of the data into the training set.
+
+```{r}
+set.seed(2)
+flu_split_ic <- initial_split(fludata_clean, prop = 3/4)
+```
+
+Next we can make the two data sets we just split into objects.
+
+```{r}
+train_data_ic <- training(flu_split_ic)
+test_data_ic <- testing(flu_split_ic)
+
+```
+
+#### Full model
+
+Let's set up the recipe using body temperature as our continuous outcome.
+
+```{r}
+flu_recipe1_ic <- recipe(BodyTemp ~ ., data = fludata_clean)
+```
+
+Prepping our model
+
+```{r}
+model1_ic <- linear_reg() %>%
+  set_engine("lm")
+```
+
+Setting up our workflow
+
+```{r}
+workflow1_ic <- workflow() %>%
+  add_model(model1_ic) %>%
+  add_recipe(flu_recipe1_ic)
+```
+
+Training the model using training data
+
+```{r}
+fit1_ic <- workflow1_ic %>%
+  fit(data = train_data_ic)
+fit1_ic %>%
+  extract_fit_parsnip() %>%
+  tidy()
+```
+
+Predicting using the test data
+
+```{r}
+predict(fit1_ic, test_data_ic)
+```
+
+Augmenting
+
+```{r}
+aug1_ic <- augment(fit1_ic, test_data_ic)
+
+aug1_ic %>%
+  select(BodyTemp, .pred)
+
+```
+
+#### Model with one predictor
+
+The one predictor we will use for this exercise is `RunnyNose`
+
+```{r}
+flu_recipe2_ic <- recipe(BodyTemp ~ RunnyNose, data = fludata_clean)
+```
+
+We do not need to set up our model again since the one we already did will work.
+
+Setting up our workflow
+
+```{r}
+workflow2_ic <- workflow() %>%
+  add_model(model1_ic) %>%
+  add_recipe(flu_recipe2_ic)
+```
+
+Training the model using training data
+
+```{r}
+fit2_ic <- workflow2_ic %>%
+  fit(data = train_data_ic)
+fit2_ic %>%
+  extract_fit_parsnip() %>%
+  tidy()
+```
+
+Predicting using the test data
+
+```{r}
+predict(fit2_ic, test_data_ic)
+```
+
+Augmenting
+
+```{r}
+aug2_ic <- augment(fit2_ic, test_data_ic)
+
+aug2_ic %>%
+  select(BodyTemp, .pred)
+
+```
