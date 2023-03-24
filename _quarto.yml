@@ -27,7 +27,7 @@ website:
           - text: "Model Fitting"
             href: ./fluanalysis/code/Fitting.html
           - text: "Model Evaluation"
-            href: ./fluanalysis/code/Fitting.html
+            href: ./fluanalysis/code/modeleval.html
     right:
       - icon: github 
         href: https://github.com/shiwanisapkota/shiwanisapkota-MADA-portfolio       
