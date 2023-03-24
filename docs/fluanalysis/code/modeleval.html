@@ -184,7 +184,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </li>  
         <li>
     <a class="dropdown-item" href="../.././fluanalysis/code/Fitting.html">
- <span class="dropdown-text">Fitting</span></a>
+ <span class="dropdown-text">Model Fitting</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../.././fluanalysis/code/Fitting.html">
+ <span class="dropdown-text">Model Evaluation</span></a>
   </li>  
     </ul>
   </li>
@@ -263,7 +267,7 @@ tidyverse 1.3.2 ──</code></pre>
 ✖ dplyr::lag()      masks stats::lag()
 ✖ yardstick::spec() masks readr::spec()
 ✖ recipes::step()   masks stats::step()
-• Use tidymodels_prefer() to resolve common conflicts.</code></pre>
+• Learn how to get started at https://www.tidymodels.org/start/</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -274,8 +278,7 @@ The following objects are masked from 'package:yardstick':
 
     mae, rmse</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>LOADING DATA</strong></p>
 <div class="cell">
@@ -333,7 +336,7 @@ $ BodyTemp          &lt;dbl&gt; 98.3, 100.4, 100.8, 98.8, 100.5, 98.4, 102.5, 98
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split)</span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>test_data  <span class="ot">&lt;-</span> <span class="fu">testing</span>(data_split)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>CREATING RECIPE THAT FITS A LOGISTIC MODEL USING NAUSEA AS OUTCOME OF INTEREST AND ALL OTHER VARIABLES</strong> <strong>AS PREDICTORS</strong></p>
+<p><strong>FULL MODEL: CREATING RECIPE THAT FITS A LOGISTIC MODEL USING NAUSEA AS OUTCOME OF INTEREST AND ALL OTHER VARIABLES AS PREDICTORS</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using Nausea as a categorical outcome of interest and all other variables as predictors</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>flu_module10_rec <span class="ot">&lt;-</span> <span class="fu">recipe</span>(Nausea <span class="sc">~</span> ., <span class="at">data =</span> train_data)</span>
@@ -386,7 +389,7 @@ Computational engine: glm </code></pre>
 # … with 28 more rows</code></pre>
 </div>
 </div>
-<p><strong>USING TRAINED WORKFLOW TO PREDICT</strong></p>
+<p><strong>FULL MODEL: USING TRAINED WORKFLOW TO PREDICT</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the trained workflow (flu_module10_fit) to predict with the unseen test data</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(flu_module10_fit, test_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
