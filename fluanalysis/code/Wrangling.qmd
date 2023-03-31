@@ -38,3 +38,28 @@ glimpse(fludata)
 ```{r}
 saveRDS(fludata, file = here("fluanalysis", "data", "fludata_clean.rds"))
 ```
+
+**PRE-PROCESSING FOR MODULE 11 MACHINE LEARNING EXERCISE**
+
+```{r}
+# Loading above created fludata_clean.rds file for additional cleaning
+fludata_clean <- readRDS(here("fluanalysis", "data", "fludata_clean.rds"))
+glimpse(fludata_clean)
+
+# There are some variables that have same information in slightly different ways. Specifically, Weakness, Cough and Myalgia exist on both a severity score and as Yes/No. Lets remove the Yes/No versions of variables as they don't help much when we model
+fludata_clean1 <- fludata_clean %>%
+  dplyr::select(-CoughYN,-WeaknessYN,-CoughYN2,-MyalgiaYN)
+glimpse(fludata_clean1)
+summary(fludata_clean1)
+
+# From summary, we see that binary predictors (Hearing and Vision variables) have <50 entries in one category (Yes or No)
+# Lets remove Hearing and Vision variables as they are unbalanced and have <50 entries in 1 of 2 categories 
+fludata_clean2 <- fludata_clean1 %>%
+  dplyr::select(-Vision,-Hearing)
+glimpse(fludata_clean2)
+
+# Now, we have a data set with 730 observations and 26 variables
+# Lets save the above created data into a new data file to work in module 11 exercise
+saveRDS(fludata_clean2, file = here("fluanalysis", "data", "fludata_clean_module11.rds"))
+```
+

@@ -118,15 +118,6 @@ flu_module10_fit2 %>%
 **ALTERNATIVE MODEL: USING TRAINED WORKFLOW TO PREDICT**
 
 ```{r, warning = FALSE}
-```
-
-```{r, warning = FALSE}
-```
-
-```{r, warning = FALSE}
-```
-
-```{r, warning = FALSE}
 # Using the trained workflow (flu_module10_fit) to predict with the unseen test data
 predict(flu_module10_fit2, test_data)
 
@@ -256,5 +247,4 @@ aug2_ic <- augment(fit2_ic, test_data_ic)
 
 aug2_ic %>%
   select(BodyTemp, .pred)
-
 ```
