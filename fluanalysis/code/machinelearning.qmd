@@ -57,7 +57,7 @@ recipe_data <- recipe(BodyTemp ~ ., data = train_data) %>%
 recipe_null_train <- recipe(BodyTemp ~ 1, data = train_data) %>%
   step_dummy(all_nominal(), -all_outcomes())
 
-# Creating a logistic model recipe
+# Creating a linear model recipe
 recipe_null_logistic <- linear_reg() %>% 
   set_engine("lm") %>% 
   set_mode("regression")
@@ -256,5 +256,5 @@ final_lasso_test <- final_lasso_wf %>% last_fit(data_split)
 
 final_lasso_test %>% collect_metrics()
 ```
-From the above final model, we got RMSE as 1.16.
 
+From the above final model, we got RMSE as 1.16.
