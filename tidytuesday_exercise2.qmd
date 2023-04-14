@@ -125,3 +125,17 @@ eggs_per_hen_time_plot <- ggplot(egg_production, aes(x = observed_month, y = egg
         axis.title = element_text(size = 14))
 eggs_per_hen_time_plot
 ```
+<<<<<<< Updated upstream
+=======
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> Stashed changes
