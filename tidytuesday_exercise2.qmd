@@ -56,7 +56,7 @@ egg_date_prodtype_plot
 egg_date_prodprocess_plot <- ggplot(egg_production, aes(x = observed_month, y = log(n_eggs))) +
   geom_point(aes(color = prod_process)) +
   theme_classic() +
-  labs(x = "Date", y = "Number of eggs", title = "Eggs production using different production process in different years") +
+  labs(x = "Date", y = "Number of eggs", title = "Eggs production using different production process over time") +
   theme(axis.text = element_text(face = "bold"), plot.title = element_text(hjust = 0.5, size = 14),
         axis.title = element_text(size = 14))
 egg_date_prodprocess_plot
@@ -74,7 +74,7 @@ hens_date_prodtype_plot
 hens_date_prodprocess_plot <- ggplot(egg_production, aes(x = observed_month, y = log(n_hens))) +
   geom_point(aes(color = prod_process))+
   theme_classic()+
-  labs(x = "Date", y = "Number of hens", title = "Hens production using different production process in different years") +
+  labs(x = "Date", y = "Number of hens", title = "Hens production using different production process over time") +
   theme(axis.text = element_text(face = "bold"), plot.title = element_text(hjust = 0.5, size = 14),
         axis.title = element_text(size = 14))
 hens_date_prodprocess_plot
@@ -189,7 +189,7 @@ metrics_null_train <- collect_metrics(train_null)
 metrics_null_train
 ```
 
-From the null model, we got RMSE as 2.07.
+From the null model, we got RMSE as 2.16.
 
 **1. DECISION TREE MODEL**
 
@@ -248,7 +248,7 @@ rpart.plot(extract_fit_parsnip(final_fit)$fit, roundint = FALSE)
 predicted_fit <- predict(final_fit, train_data)
 ```
 
-From the tree model, we got RMSE as 0.74.
+From the tree model, we got RMSE as 0.77.
 
 **2. LASSO MODEL**
 
@@ -296,7 +296,7 @@ plot_lasso <- extract_fit_engine(final_lasso_fit)
 plot(plot_lasso, "lambda")
 ```
 
-From the Lasso model, we got RMSE as 0.74.
+From the Lasso model, we got RMSE as 0.77.
 
 **3. RANDOM FOREST MODEL**
 
@@ -354,7 +354,7 @@ vip(plot_randomforest)
 predicted_randomforest_fit <- predict(final_randomforest_fit, train_data)
 ```
 
-From the random forest model, we got RMSE as 0.74.
+From the random forest model, we got RMSE as 0.77.
 
 **4. BOOSTED TREE MODEL**
 
@@ -396,7 +396,7 @@ final_boostedtree_wf <- wf_boostedtree %>%
   finalize_workflow(best_boostedtree)
 ```
 
-From the boosted model, we got RMSE as 0.74.
+From the boosted model, we got RMSE as 0.77.
 
 **COMPARING MODELS**
 
@@ -405,22 +405,20 @@ models_summary <- bind_rows(best_decisiontree, best_lasso, best_randomforestmode
 models_summary
 ```
 
-We got rmse from our Null model as 2.07 and based on the above summary table, all the other 4 models performed better compared to the null model. There was almost no difference among those 4 models. However, Decision tree model and Boosted tree model performed the same with similar standard error. I chose Decision tree model as the best model due to its easy interpretation, robustness, and less risk of over fitting issues.
+We got rmse from our Null model as 2.16 and based on the above summary table, all the other 4 models performed better compared to the null model. There was almost no difference among those 4 models. I chose Lasso model as the best model due to its easy interpretation, robustness, and less risk of over fitting issues.
 
 **FINAL EVALUATION**
 
 ```{r}
-# Fitting the final Decision tree model on split data
-final_decisiontree_test <- final_wf %>% last_fit(data_split) 
+# Fitting the final Lasso model on split data
+final_lsso_test <- final_lasso_wf %>% last_fit(data_split) 
 
-final_decisiontree_test %>% collect_metrics()
+final_lsso_test %>% collect_metrics()
 ```
-
-From the above final model, we got RMSE as 0.78.
 
 **DISCUSSION**
 
-The TidyTuesday data for week 15 was imported for this exercise. Data exploration, wrangling, and visualization was done. Data plots showed differences in the average number of eggs per hens by production type and process so research question was developed to see if there occurs any association. Null linear model was run for metrics comparison. Along with the null model, 4 other models (Decision tree, Lasso, Random forest, and Boosted tree models) were performed. Based on the RMSE and easy interpretation, decision tree model was selected which performed much better than the null model and this model could be used to address our research question.
+The TidyTuesday data for week 15 was imported for this exercise. Data exploration, wrangling, and visualization was done. Data plots showed differences in the average number of eggs per hens by production type and process so research question was developed to see if there occurs any association. Null linear model was run for metrics comparison. Along with the null model, 4 other models (Decision tree, Lasso, Random forest, and Boosted tree models) were performed. Based on the RMSE and easy interpretation, Lasso model was selected which performed much better than the null model and this model could be used to address our research question.
 
 
 
