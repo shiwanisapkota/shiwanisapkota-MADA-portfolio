@@ -720,7 +720,7 @@ $ source         &lt;chr&gt; "Egg-Markets-Overview-2019-10-19.pdf", "Egg-Markets
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>egg_date_prodprocess_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(egg_production, <span class="fu">aes</span>(<span class="at">x =</span> observed_month, <span class="at">y =</span> <span class="fu">log</span>(n_eggs))) <span class="sc">+</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> prod_process)) <span class="sc">+</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Date"</span>, <span class="at">y =</span> <span class="st">"Number of eggs"</span>, <span class="at">title =</span> <span class="st">"Eggs production using different production process in different years"</span>) <span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Date"</span>, <span class="at">y =</span> <span class="st">"Number of eggs"</span>, <span class="at">title =</span> <span class="st">"Eggs production using different production process over time"</span>) <span class="sc">+</span></span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>), <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>))</span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>egg_date_prodprocess_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -742,7 +742,7 @@ $ source         &lt;chr&gt; "Egg-Markets-Overview-2019-10-19.pdf", "Egg-Markets
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>hens_date_prodprocess_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(egg_production, <span class="fu">aes</span>(<span class="at">x =</span> observed_month, <span class="at">y =</span> <span class="fu">log</span>(n_hens))) <span class="sc">+</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> prod_process))<span class="sc">+</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Date"</span>, <span class="at">y =</span> <span class="st">"Number of hens"</span>, <span class="at">title =</span> <span class="st">"Hens production using different production process in different years"</span>) <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Date"</span>, <span class="at">y =</span> <span class="st">"Number of hens"</span>, <span class="at">title =</span> <span class="st">"Hens production using different production process over time"</span>) <span class="sc">+</span></span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>), <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">14</span>),</span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">14</span>))</span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>hens_date_prodprocess_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -817,7 +817,7 @@ $ source         &lt;chr&gt; "Egg-Markets-Overview-2019-10-19.pdf", "Egg-Markets
 </div>
 </div>
 <p><strong>RESEARCH QUESTION</strong></p>
-<p>Is there any association between the average number of eggs produced per hens, the production process, and the production types? Outcome: Average number of eggs per hen Predictor: Production type (Hatching or Table eggs), Production process (all, cage-free (non-organic), cage-free (organic))</p>
+<p>Is there any association between the average number of eggs produced per hens, the production process, and the production types? Outcome: Average number of eggs per hen Predictor: Production type (Hatching or Table eggs) and Production process (all, cage-free (non-organic), and cage-free (organic))</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let's create a new object to with our research question</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>eggs_per_hen_prod <span class="ot">&lt;-</span> egg_production <span class="sc">%&gt;%</span></span>
@@ -841,8 +841,8 @@ $ source         &lt;chr&gt; "Egg-Markets-Overview-2019-10-19.pdf", "Egg-Markets
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setting the random seed to 123</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Splitting dataset into 70% training and 30% testing</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(eggs_per_hen_prod, <span class="at">prop =</span> <span class="dv">7</span><span class="sc">/</span><span class="dv">10</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Splitting dataset</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>data_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(eggs_per_hen_prod, <span class="at">prop =</span> <span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)</span>
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating data frames for the two sets:</span></span>
 <span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> <span class="fu">training</span>(data_split)</span>
@@ -1081,11 +1081,11 @@ $ source         &lt;chr&gt; "Egg-Markets-Overview-2019-10-19.pdf", "Egg-Markets
 <pre><code># A tibble: 2 × 6
   .metric .estimator   mean     n std_err .config             
   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               
-1 rmse    standard     2.16    25  0.0532 Preprocessor1_Model1
+1 rmse    standard     2.20    25  0.0417 Preprocessor1_Model1
 2 rsq     standard   NaN        0 NA      Preprocessor1_Model1</code></pre>
 </div>
 </div>
-<p>From the null model, we got RMSE as 2.07.</p>
+<p>From the null model, we got RMSE as 2.16.</p>
 <p><strong>1. DECISION TREE MODEL</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tuning hyperparameters by creating model specification that identifies which hyperparameters we are planning to tune</span></span>
@@ -1144,11 +1144,11 @@ Computational engine: rpart </code></pre>
 <pre><code># A tibble: 5 × 8
   cost_complexity tree_depth .metric .estimator  mean     n std_err .config     
             &lt;dbl&gt;      &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;       
-1    0.0000000001          4 rmse    standard   0.766    25  0.0230 Preprocesso…
-2    0.0000000178          4 rmse    standard   0.766    25  0.0230 Preprocesso…
-3    0.00000316            4 rmse    standard   0.766    25  0.0230 Preprocesso…
-4    0.000562              4 rmse    standard   0.766    25  0.0230 Preprocesso…
-5    0.0000000001          8 rmse    standard   0.766    25  0.0230 Preprocesso…</code></pre>
+1    0.0000000001          4 rmse    standard   0.766    25  0.0209 Preprocesso…
+2    0.0000000178          4 rmse    standard   0.766    25  0.0209 Preprocesso…
+3    0.00000316            4 rmse    standard   0.766    25  0.0209 Preprocesso…
+4    0.000562              4 rmse    standard   0.766    25  0.0209 Preprocesso…
+5    0.0000000001          8 rmse    standard   0.766    25  0.0209 Preprocesso…</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>best_tree <span class="ot">&lt;-</span> tree_res <span class="sc">%&gt;%</span></span>
 <span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_best</span>(<span class="at">metric =</span> <span class="st">"rmse"</span>)</span>
@@ -1174,7 +1174,7 @@ Computational engine: rpart </code></pre>
 <div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predicted outcomes</span></span>
 <span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>predicted_fit <span class="ot">&lt;-</span> <span class="fu">predict</span>(final_fit, train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>From the tree model, we got RMSE as 0.74.</p>
+<p>From the tree model, we got RMSE as 0.77.</p>
 <p><strong>2. LASSO MODEL</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Building the model</span></span>
@@ -1208,11 +1208,11 @@ Computational engine: rpart </code></pre>
 <pre><code># A tibble: 5 × 7
    penalty .metric .estimator  mean     n std_err .config              
      &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
-1 0.0001   rmse    standard   0.766    25  0.0231 Preprocessor1_Model01
-2 0.000127 rmse    standard   0.766    25  0.0231 Preprocessor1_Model02
-3 0.000161 rmse    standard   0.766    25  0.0231 Preprocessor1_Model03
-4 0.000204 rmse    standard   0.766    25  0.0231 Preprocessor1_Model04
-5 0.000259 rmse    standard   0.766    25  0.0231 Preprocessor1_Model05</code></pre>
+1 0.0001   rmse    standard   0.766    25  0.0209 Preprocessor1_Model01
+2 0.000127 rmse    standard   0.766    25  0.0209 Preprocessor1_Model02
+3 0.000161 rmse    standard   0.766    25  0.0209 Preprocessor1_Model03
+4 0.000204 rmse    standard   0.766    25  0.0209 Preprocessor1_Model04
+5 0.000259 rmse    standard   0.766    25  0.0209 Preprocessor1_Model05</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>best_lasso <span class="ot">&lt;-</span> res_lasso <span class="sc">%&gt;%</span></span>
 <span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_best</span>(<span class="at">metric =</span> <span class="st">"rmse"</span>)</span>
@@ -1236,7 +1236,7 @@ Computational engine: rpart </code></pre>
 <p><img src="tidytuesday_exercise2_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>From the Lasso model, we got RMSE as 0.74.</p>
+<p>From the Lasso model, we got RMSE as 0.77.</p>
 <p><strong>3. RANDOM FOREST MODEL</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Detecting the cores</span></span>
@@ -1291,11 +1291,11 @@ See `?dials::finalize` or `?dials::update.parameters` for more information.</cod
 <pre><code># A tibble: 5 × 8
    mtry min_n .metric .estimator  mean     n std_err .config              
   &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;                
-1     3     2 rmse    standard   0.766    25  0.0230 Preprocessor1_Model09
-2     3     5 rmse    standard   0.766    25  0.0230 Preprocessor1_Model11
-3     3    33 rmse    standard   0.766    25  0.0230 Preprocessor1_Model24
-4     3    35 rmse    standard   0.766    25  0.0230 Preprocessor1_Model12
-5     3    25 rmse    standard   0.767    25  0.0230 Preprocessor1_Model21</code></pre>
+1     3     6 rmse    standard   0.766    25  0.0209 Preprocessor1_Model01
+2     3    21 rmse    standard   0.766    25  0.0209 Preprocessor1_Model25
+3     3    27 rmse    standard   0.766    25  0.0209 Preprocessor1_Model02
+4     3     3 rmse    standard   0.766    25  0.0209 Preprocessor1_Model10
+5     3     8 rmse    standard   0.766    25  0.0209 Preprocessor1_Model15</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>best_randomforest <span class="ot">&lt;-</span> res_randomforest <span class="sc">%&gt;%</span></span>
 <span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_best</span>(<span class="at">metric =</span> <span class="st">"rmse"</span>)</span>
@@ -1324,7 +1324,7 @@ See `?dials::finalize` or `?dials::update.parameters` for more information.</cod
 <div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predicted outcomes</span></span>
 <span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>predicted_randomforest_fit <span class="ot">&lt;-</span> <span class="fu">predict</span>(final_randomforest_fit, train_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>From the random forest model, we got RMSE as 0.74.</p>
+<p>From the random forest model, we got RMSE as 0.77.</p>
 <p><strong>4. BOOSTED TREE MODEL</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Building the model</span></span>
@@ -1983,11 +1983,11 @@ See `?dials::finalize` or `?dials::update.parameters` for more information.</cod
 <pre><code># A tibble: 5 × 9
   trees min_n tree_depth .metric .estimator  mean     n std_err .config         
   &lt;int&gt; &lt;int&gt;      &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;           
-1  1000     2          1 rmse    standard   0.766    25  0.0230 Preprocessor1_M…
-2  1000    21          1 rmse    standard   0.766    25  0.0230 Preprocessor1_M…
-3  2000     2          1 rmse    standard   0.766    25  0.0230 Preprocessor1_M…
-4  2000    21          1 rmse    standard   0.766    25  0.0230 Preprocessor1_M…
-5  1000     2          8 rmse    standard   0.766    25  0.0230 Preprocessor1_M…</code></pre>
+1  1000     2          1 rmse    standard   0.766    25  0.0209 Preprocessor1_M…
+2  1000    21          1 rmse    standard   0.766    25  0.0209 Preprocessor1_M…
+3  2000     2          1 rmse    standard   0.766    25  0.0209 Preprocessor1_M…
+4  2000    21          1 rmse    standard   0.766    25  0.0209 Preprocessor1_M…
+5  1000     2          8 rmse    standard   0.766    25  0.0209 Preprocessor1_M…</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>best_boostedtree <span class="ot">&lt;-</span> res_boostedtree <span class="sc">%&gt;%</span></span>
 <span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_best</span>(<span class="at">metric =</span> <span class="st">"rmse"</span>)</span>
@@ -2001,7 +2001,7 @@ See `?dials::finalize` or `?dials::update.parameters` for more information.</cod
 <span id="cb117-10"><a href="#cb117-10" aria-hidden="true" tabindex="-1"></a>final_boostedtree_wf <span class="ot">&lt;-</span> wf_boostedtree <span class="sc">%&gt;%</span> </span>
 <span id="cb117-11"><a href="#cb117-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">finalize_workflow</span>(best_boostedtree)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>From the boosted model, we got RMSE as 0.74.</p>
+<p>From the boosted model, we got RMSE as 0.77.</p>
 <p><strong>COMPARING MODELS</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a>models_summary <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(best_decisiontree, best_lasso, best_randomforestmodel, best_boostedtree)</span>
@@ -2010,16 +2010,16 @@ See `?dials::finalize` or `?dials::update.parameters` for more information.</cod
 <pre><code># A tibble: 4 × 4
   .metric  mean std_err model              
   &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;              
-1 rmse    0.766  0.0230 Decision Tree Model
-2 rmse    0.766  0.0231 Lasso Model        
-3 rmse    0.766  0.0230 Random Forest Model
-4 rmse    0.766  0.0230 Boosted Tree Model </code></pre>
+1 rmse    0.766  0.0209 Decision Tree Model
+2 rmse    0.766  0.0209 Lasso Model        
+3 rmse    0.766  0.0209 Random Forest Model
+4 rmse    0.766  0.0209 Boosted Tree Model </code></pre>
 </div>
 </div>
-<p>We got rmse from our Null model as 2.07 and based on the above summary table, all the other 4 models performed better compared to the null model. There was almost no difference among those 4 models. However, Decision tree model and Boosted tree model performed the same with similar standard error. I chose Decision tree model as the best model due to its easy interpretation, robustness, and less risk of over fitting issues.</p>
+<p>We got rmse from our Null model as 2.16 and based on the above summary table, all the other 4 models performed better compared to the null model. There was almost no difference among those 4 models. I chose Decision tree model as the best model due to its easy interpretation, robustness, and less risk of over fitting issues.</p>
 <p><strong>FINAL EVALUATION</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitting the final Decision tree model on split data</span></span>
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitting the final Lasso model on test data</span></span>
 <span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>final_decisiontree_test <span class="ot">&lt;-</span> final_wf <span class="sc">%&gt;%</span> <span class="fu">last_fit</span>(data_split) </span>
 <span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a>final_decisiontree_test <span class="sc">%&gt;%</span> <span class="fu">collect_metrics</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -2027,13 +2027,12 @@ See `?dials::finalize` or `?dials::update.parameters` for more information.</cod
 <pre><code># A tibble: 2 × 4
   .metric .estimator .estimate .config             
   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
-1 rmse    standard       0.716 Preprocessor1_Model1
-2 rsq     standard       0.899 Preprocessor1_Model1</code></pre>
+1 rmse    standard       0.705 Preprocessor1_Model1
+2 rsq     standard       0.894 Preprocessor1_Model1</code></pre>
 </div>
 </div>
-<p>From the above final model, we got RMSE as 0.78.</p>
 <p><strong>DISCUSSION</strong></p>
-<p>The TidyTuesday data for week 15 was imported for this exercise. Data exploration, wrangling, and visualization was done. Data plots showed differences in the average number of eggs per hens by production type and process so research question was developed to see if there occurs any association. Null linear model was run for metrics comparison. Along with the null model, 4 other models (Decision tree, Lasso, Random forest, and Boosted tree models) were performed. Based on the RMSE and easy interpretation, decision tree model was selected which performed much better than the null model and this model could be used to address our research question.</p>
+<p>The TidyTuesday data for week 15 was imported for this exercise. Data exploration, wrangling, and visualization was done. Data plots showed differences in the average number of eggs per hens by production type and process so research question was developed to see if there occurs any association. Null linear model was run for metrics comparison. Along with the null model, 4 other models (Decision tree, Lasso, Random forest, and Boosted tree models) were performed. Based on the RMSE and easy interpretation, Decision tree model was selected which performed much better than the null model and this model could be used to address our research question.</p>
 
 
 

@@ -148,8 +148,8 @@ head(eggs_per_hen_prod)
 # Setting the random seed to 123
 set.seed(123)
 
-# Splitting dataset into 70% training and 30% testing
-data_split <- initial_split(eggs_per_hen_prod, prop = 7/10)
+# Splitting dataset
+data_split <- initial_split(eggs_per_hen_prod, prop = 3/4)
   
 # Creating data frames for the two sets:
 train_data <- training(data_split)
@@ -405,20 +405,20 @@ models_summary <- bind_rows(best_decisiontree, best_lasso, best_randomforestmode
 models_summary
 ```
 
-We got rmse from our Null model as 2.16 and based on the above summary table, all the other 4 models performed better compared to the null model. There was almost no difference among those 4 models. I chose Lasso model as the best model due to its easy interpretation, robustness, and less risk of over fitting issues.
+We got rmse from our Null model as 2.16 and based on the above summary table, all the other 4 models performed better compared to the null model. There was almost no difference among those 4 models. I chose Decision tree model as the best model due to its easy interpretation, robustness, and less risk of over fitting issues.
 
 **FINAL EVALUATION**
 
 ```{r}
-# Fitting the final Lasso model on split data
-final_lsso_test <- final_lasso_wf %>% last_fit(data_split) 
+# Fitting the final Lasso model on test data
+final_decisiontree_test <- final_wf %>% last_fit(data_split) 
 
-final_lsso_test %>% collect_metrics()
+final_decisiontree_test %>% collect_metrics()
 ```
 
 **DISCUSSION**
 
-The TidyTuesday data for week 15 was imported for this exercise. Data exploration, wrangling, and visualization was done. Data plots showed differences in the average number of eggs per hens by production type and process so research question was developed to see if there occurs any association. Null linear model was run for metrics comparison. Along with the null model, 4 other models (Decision tree, Lasso, Random forest, and Boosted tree models) were performed. Based on the RMSE and easy interpretation, Lasso model was selected which performed much better than the null model and this model could be used to address our research question.
+The TidyTuesday data for week 15 was imported for this exercise. Data exploration, wrangling, and visualization was done. Data plots showed differences in the average number of eggs per hens by production type and process so research question was developed to see if there occurs any association. Null linear model was run for metrics comparison. Along with the null model, 4 other models (Decision tree, Lasso, Random forest, and Boosted tree models) were performed. Based on the RMSE and easy interpretation, Decision tree model was selected which performed much better than the null model and this model could be used to address our research question.
 
 
 
