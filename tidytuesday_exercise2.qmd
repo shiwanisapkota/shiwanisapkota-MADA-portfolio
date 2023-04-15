@@ -21,6 +21,8 @@ library(ranger)
 library(glmnet)
 library(rpart.plot)
 library(vip)
+library(bonsai)
+library(lightgbm)
 ```
 
 **LOADING AND LOOKING TIDYTUESDAY 2023 WEEK 15 (04/11/2023) DATA**
@@ -28,10 +30,12 @@ library(vip)
 ```{r}
 # Loading the TidyTuesday 2023 week 15 (04/11/2023) data
 egg_production <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-04-11/egg-production.csv')
+head(egg_production)
 glimpse(egg_production)
 skim(egg_production)
 
 cage_free_percentages <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-04-11/cage-free-percentages.csv')
+head(cage_free_percentages)
 glimpse(cage_free_percentages)
 skim(cage_free_percentages)
 ```
@@ -125,17 +129,300 @@ eggs_per_hen_time_plot <- ggplot(egg_production, aes(x = observed_month, y = egg
         axis.title = element_text(size = 14))
 eggs_per_hen_time_plot
 ```
-<<<<<<< Updated upstream
-=======
+**RESEARCH QUESTION**
+
+Is there any association between the average number of eggs produced per hens, the production process, and the production types?
+Outcome: Average number of eggs per hen
+Predictor: Production type (Hatching or Table eggs) and Production process (all, cage-free (non-organic), and cage-free (organic))
+
+```{r}
+# Let's create a new object to with our research question
+eggs_per_hen_prod <- egg_production %>%
+  select(prod_type, prod_process, eggs_per_hen)
+
+head(eggs_per_hen_prod)
+```
+**DATA SETUP**
+
+```{r}
+# Setting the random seed to 123
+set.seed(123)
+
+# Splitting dataset into 70% training and 30% testing
+data_split <- initial_split(eggs_per_hen_prod, prop = 7/10)
+  
+# Creating data frames for the two sets:
+train_data <- training(data_split)
+test_data  <- testing(data_split)
+
+# Creating 5-fold cross-validation, 5 times repeated
+CV_fold_data <- vfold_cv(train_data, v = 5, repeats = 5)
+
+# Creating a recipe
+recipe_data <- recipe(eggs_per_hen ~ ., data = train_data) %>%
+  step_dummy(all_nominal(), -all_outcomes())
+```
+
+**NULL MODEL PERFORMANCE**
+
+```{r}
+# Using train data
+# Creating a recipe for null model
+recipe_null_train <- recipe(eggs_per_hen ~ 1, data = train_data) %>%
+  step_dummy(all_nominal(), -all_outcomes())
+
+# Creating a linear model recipe
+recipe_null_logistic <- linear_reg() %>% 
+  set_engine("lm") %>% 
+  set_mode("regression")
+
+# Creating workflow pairing model and recipe 
+workflow_null_train <- workflow() %>% 
+  add_model(recipe_null_logistic) %>% 
+  add_recipe(recipe_null_train)
+
+# Fitting null model with the folds created from train data 
+train_null <- fit_resamples(workflow_null_train, resamples = CV_fold_data)
+
+# Computing RMSE for train data
+metrics_null_train <- collect_metrics(train_null)
+metrics_null_train
+```
+
+From the null model, we got RMSE as 2.07.
+
+**1. DECISION TREE MODEL**
+
+```{r}
+# Tuning hyperparameters by creating model specification that identifies which hyperparameters we are planning to tune
+tune_tree_model <- 
+  decision_tree(
+    cost_complexity = tune(),
+    tree_depth = tune()) %>%
+  set_engine("rpart") %>% 
+  set_mode("regression")
+tune_tree_model
+
+# Creating a regular grid of values for using some convenience functions for each hyperparameter
+tree_grid <- grid_regular(cost_complexity(), tree_depth(), levels = 5)
+
+tree_grid %>% count(tree_depth)
+
+# Tuning the workflow using model specification and recipe and model
+tree_wf <- workflow() %>%
+  add_model(tune_tree_model) %>%
+  add_recipe(recipe_data)
+
+# Tuning using cross-validation and the tune_grid() function
+tree_res <- tree_wf %>% 
+  tune_grid(resamples = CV_fold_data,
+    grid = tree_grid)
+
+# Plotting the above results
+tree_res %>% autoplot()
+
+# Getting the best-fit model
+tree_res %>%
+  show_best()
+
+best_tree <- tree_res %>%
+  select_best(metric = "rmse")
+
+# Getting summary table for best decision tree model
+best_decisiontree <- tree_res %>% show_best("rmse", n = 1) %>% 
+  select(c(.metric, mean, std_err)) %>% 
+  mutate(model = "Decision Tree Model")
+
+# Getting the final workflow
+final_wf <- tree_wf %>% 
+  finalize_workflow(best_tree)
+
+# Fitting to the training data with the final workflow
+final_fit <- final_wf %>%
+  fit(train_data)
+
+# Plotting the final fit
+rpart.plot(extract_fit_parsnip(final_fit)$fit, roundint = FALSE)
+
+# Predicted outcomes
+predicted_fit <- predict(final_fit, train_data)
+```
+
+From the tree model, we got RMSE as 0.74.
+
+**2. LASSO MODEL**
+
+```{r}
+# Building the model
+model_lasso <- linear_reg(penalty = tune(), mixture = 1) %>% set_engine("glmnet") %>% set_mode("regression")
+
+# We will be using the recipe (recipe_data) that we created above 
+# Creating the workflow
+wf_lasso <- workflow() %>% 
+  add_model(model_lasso) %>% 
+  add_recipe(recipe_data)
+
+# Model tuning using grid
+lasso_grid <- tibble(penalty = 10^seq(-4, -1, length.out = 30))
+
+# Tuning the model using tune_grid() function
+res_lasso <- wf_lasso %>% tune_grid(resamples = CV_fold_data, grid = lasso_grid,
+    control = control_grid(save_pred = TRUE))
+
+# Plotting the above results
+res_lasso %>% autoplot()
+
+# Getting the best-fit model
+res_lasso %>%
+  show_best()
+
+best_lasso <- res_lasso %>%
+  select_best(metric = "rmse")
+
+# Getting summary table for best lasso model
+best_lasso <- res_lasso %>% show_best("rmse", n = 1) %>% 
+  select(c(.metric, mean, std_err)) %>% 
+  mutate(model = "Lasso Model")
+
+# Getting the final workflow
+final_lasso_wf <- wf_lasso %>% 
+  finalize_workflow(best_lasso)
+
+# Fitting to the training data with the final workflow
+final_lasso_fit <- final_lasso_wf %>% fit(train_data) 
+
+# Plotting the final fit
+plot_lasso <- extract_fit_engine(final_lasso_fit)
+plot(plot_lasso, "lambda")
+```
+
+From the Lasso model, we got RMSE as 0.74.
+
+**3. RANDOM FOREST MODEL**
+
+```{r}
+# Detecting the cores
+cores <- parallel::detectCores()
+cores
+
+# Building the model
+model_randomforest <- rand_forest(mtry = tune(), min_n = tune(), trees = 1000) %>% 
+  set_engine("ranger",importance = "impurity", num.threads = cores) %>%
+  set_mode("regression")
+
+# We will be using the recipe (recipe_data) that we created above 
+# Creating the workflow
+wf_randomforest <- workflow() %>%
+  add_model(model_randomforest) %>%
+  add_recipe(recipe_data)
+
+# Model tuning
+extract_parameter_set_dials(model_randomforest)
+
+# Tuning the model using tune_grid() function
+res_randomforest <- wf_randomforest %>% tune_grid(resamples = CV_fold_data, grid = 25,
+    control = control_grid(save_pred = TRUE), metrics = NULL)
+
+# Plotting the above results
+res_randomforest %>% autoplot()
+
+# Getting the best-fit model
+res_randomforest %>%
+  show_best()
+
+best_randomforest <- res_randomforest %>%
+  select_best(metric = "rmse")
+
+# Getting summary table for best random forest model
+best_randomforestmodel <- res_randomforest %>% show_best("rmse", n = 1) %>% 
+  select(c(.metric, mean, std_err)) %>% 
+  mutate(model = "Random Forest Model")
+
+# Getting the final workflow
+final_randomforest_wf <- wf_randomforest %>% 
+  finalize_workflow(best_randomforest)
+
+# Fitting to the training data with the final workflow
+final_randomforest_fit <- final_randomforest_wf %>% fit(train_data) 
+final_randomforest_fit %>% extract_fit_parsnip() %>% vip(num_features = 28)
+
+# Plotting the final fit
+plot_randomforest <- extract_fit_engine(final_randomforest_fit)
+vip(plot_randomforest)
+
+# Predicted outcomes
+predicted_randomforest_fit <- predict(final_randomforest_fit, train_data)
+```
+
+From the random forest model, we got RMSE as 0.74.
+
+**4. BOOSTED TREE MODEL**
+
+```{r}
+# Building the model
+model_boostedtree <- boost_tree(tree_depth = tune(), trees = tune(), min_n = tune()) %>%
+  set_engine("lightgbm") %>% set_mode("regression")
+
+# We will be using the recipe (recipe_data) that we created above 
+# Creating the workflow
+wf_boostedtree <- workflow() %>%
+  add_model(model_boostedtree) %>%
+  add_recipe(recipe_data)
+
+# Model tuning
+grid_boostedtree <- grid_regular(tree_depth(), trees(), min_n())
+
+# Tuning the model using tune_grid() function
+res_boostedtree <- wf_boostedtree %>% tune_grid(resamples = CV_fold_data, grid = grid_boostedtree,
+    control = control_grid(save_pred = TRUE), metrics = NULL)
+
+# Plotting the above results
+res_boostedtree %>% autoplot()
+
+# Getting the best-fit model
+res_boostedtree %>%
+  show_best()
+
+best_boostedtree <- res_boostedtree %>%
+  select_best(metric = "rmse")
+
+# Getting summary table for best random forest model
+best_boostedtree <- res_boostedtree %>% show_best("rmse", n = 1) %>% 
+  select(c(.metric, mean, std_err)) %>% 
+  mutate(model = "Boosted Tree Model")
+
+# Getting the final workflow
+final_boostedtree_wf <- wf_boostedtree %>% 
+  finalize_workflow(best_boostedtree)
+```
+
+From the boosted model, we got RMSE as 0.74.
+
+**COMPARING MODELS**
+
+```{r}
+models_summary <- bind_rows(best_decisiontree, best_lasso, best_randomforestmodel, best_boostedtree)
+models_summary
+```
+
+We got rmse from our Null model as 2.07 and based on the above summary table, all the other 4 models performed better compared to the null model. There was almost no difference among those 4 models. However, Decision tree model and Boosted tree model performed the same with similar standard error. I chose Decision tree model as the best model due to its easy interpretation, robustness, and less risk of over fitting issues.
+
+**FINAL EVALUATION**
+
+```{r}
+# Fitting the final Decision tree model on split data
+final_decisiontree_test <- final_wf %>% last_fit(data_split) 
+
+final_decisiontree_test %>% collect_metrics()
+```
+
+From the above final model, we got RMSE as 0.78.
+
+**DISCUSSION**
+
+The TidyTuesday data for week 15 was imported for this exercise. Data exploration, wrangling, and visualization was done. Data plots showed differences in the average number of eggs per hens by production type and process so research question was developed to see if there occurs any association. Null linear model was run for metrics comparison. Along with the null model, 4 other models (Decision tree, Lasso, Random forest, and Boosted tree models) were performed. Based on the RMSE and easy interpretation, decision tree model was selected which performed much better than the null model and this model could be used to address our research question.
 
 
 
 
 
-
-
-
-
-
-
->>>>>>> Stashed changes
